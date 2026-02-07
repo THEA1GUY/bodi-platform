@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -17,7 +17,7 @@ type Property = {
     amenities: string[];
 };
 
-export default function PropertiesPage() {
+function PropertiesContent() {
     const searchParams = useSearchParams();
     const [properties, setProperties] = useState<Property[]>([]);
     const [allProperties, setAllProperties] = useState<Property[]>([]);
@@ -47,7 +47,8 @@ export default function PropertiesPage() {
         if (filters.verifiedOnly) params.append('verified_only', 'true');
 
         try {
-            const res = await fetch(`http://localhost:8000/api/properties?${params}`);
+            const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+            const res = await fetch(`${apiBase}/api/properties?${params}`);
             const data = await res.json();
             setProperties(data);
             setAllProperties(data);
@@ -154,5 +155,13 @@ export default function PropertiesPage() {
                 </div>
             </main>
         </div>
+    );
+}
+
+export default function PropertiesPage() {
+    return (
+        <Suspense fallback={<div className="loading-screen">Loading properties...</div>}>
+            <PropertiesContent />
+        </Suspense>
     );
 }
