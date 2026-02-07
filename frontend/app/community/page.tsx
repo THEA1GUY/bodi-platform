@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '@/lib/api';
 import Image from 'next/image';
 
 type ServiceProvider = {
@@ -25,7 +26,7 @@ export default function CommunityPage() {
     const loadServiceProviders = async () => {
         const params = filterType ? `?service_type=${filterType}` : '';
         try {
-            const res = await fetch(`http://localhost:8000/api/service-providers${params}`);
+            const res = await fetch(getApiUrl(`/api/service-providers${params}`));
             const data = await res.json();
             setServiceProviders(data);
         } catch (err) {

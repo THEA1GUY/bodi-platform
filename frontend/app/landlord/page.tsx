@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '@/lib/api';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -48,19 +49,16 @@ export default function LandlordDashboard() {
     const loadDashboardData = async () => {
         try {
             // Load properties
-            const propsRes = await fetch(`http://localhost:8000/api/landlord/${landlordId}/properties`);
-            const propsData = await propsRes.json();
-            setProperties(propsData);
+            const propsRes = await fetch(getApiUrl(`/api/landlord/${landlordId}/properties`));
+            setProperties(await propsRes.json());
 
             // Load analytics
-            const analyticsRes = await fetch(`http://localhost:8000/api/landlord/${landlordId}/analytics`);
-            const analyticsData = await analyticsRes.json();
-            setAnalytics(analyticsData);
+            const analyticsRes = await fetch(getApiUrl(`/api/landlord/${landlordId}/analytics`));
+            setAnalytics(await analyticsRes.json());
 
             // Load maintenance requests
-            const maintenanceRes = await fetch(`http://localhost:8000/api/landlord/${landlordId}/maintenance-requests`);
-            const maintenanceData = await maintenanceRes.json();
-            setMaintenanceRequests(maintenanceData);
+            const maintenanceRes = await fetch(getApiUrl(`/api/landlord/${landlordId}/maintenance-requests`));
+            setMaintenanceRequests(await maintenanceRes.json());
         } catch (err) {
             console.error("Failed to load dashboard:", err);
         }

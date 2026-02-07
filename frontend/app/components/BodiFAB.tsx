@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { getApiUrl } from '@/lib/api';
 
 type Message = {
     role: 'user' | 'assistant';
@@ -41,7 +42,7 @@ export default function BodiFAB() {
 
     useEffect(() => {
         // Load all properties for matching
-        fetch('http://localhost:8000/api/properties')
+        fetch(getApiUrl('/api/properties'))
             .then(res => res.json())
             .then(data => setAllProperties(data))
             .catch(err => console.error("Failed to load properties:", err));
@@ -105,7 +106,7 @@ export default function BodiFAB() {
         try {
             const contextMessages = [...messages, userMsg].slice(-10);
 
-            const res = await fetch('http://localhost:8000/api/chat', {
+            const res = await fetch(getApiUrl('/api/chat'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ messages: contextMessages, language: language })

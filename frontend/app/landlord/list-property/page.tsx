@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { getApiUrl } from '@/lib/api';
 
 type PropertyType = 'apartment' | 'duplex' | 'studio' | 'bungalow' | 'flat';
 
@@ -62,7 +63,7 @@ export default function ListPropertyPage() {
                 neighborhood_id: `${cityCode}-${formData.location.replace(/\s+/g, '-').toUpperCase()}`
             };
 
-            const res = await fetch('http://localhost:8000/api/landlord/properties', {
+            const res = await fetch(getApiUrl('/api/landlord/properties'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(propertyData)

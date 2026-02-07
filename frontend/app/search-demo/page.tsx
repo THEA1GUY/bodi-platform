@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '@/lib/api';
 
 type SearchResult = {
     query: string;
@@ -31,7 +32,7 @@ export default function SemanticSearchDemo() {
 
         setIsSearching(true);
         try {
-            const res = await fetch(`http://localhost:8000/api/search/semantic?query=${encodeURIComponent(query)}`, {
+            const res = await fetch(getApiUrl(`/api/search/semantic?query=${encodeURIComponent(query)}`), {
                 method: 'POST'
             });
 

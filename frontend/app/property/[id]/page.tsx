@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
+import { getApiUrl } from '@/lib/api';
 
 type Property = {
     id: string;
@@ -43,7 +44,7 @@ export default function PropertyDetailPage() {
 
     const loadPropertyDetails = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/properties/${propertyId}`);
+            const res = await fetch(getApiUrl(`/api/properties/${propertyId}`));
             const data = await res.json();
             setProperty(data);
             setReviews(data.reviews || []);
@@ -55,7 +56,7 @@ export default function PropertyDetailPage() {
 
     const initiateEscrow = async () => {
         try {
-            const res = await fetch('http://localhost:8000/api/escrow/initiate', {
+            const res = await fetch(getApiUrl('/api/escrow/initiate'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -73,7 +74,7 @@ export default function PropertyDetailPage() {
 
     const startLocationShare = async () => {
         try {
-            const res = await fetch('http://localhost:8000/api/safety/location-share', {
+            const res = await fetch(getApiUrl('/api/safety/location-share'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

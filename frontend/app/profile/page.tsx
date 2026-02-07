@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '@/lib/api';
 import Image from 'next/image';
 
 type User = {
@@ -25,7 +26,7 @@ export default function ProfilePage() {
 
     const loadUserData = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/api/users/${userId}`);
+            const res = await fetch(getApiUrl(`/api/users/${userId}`));
             const data = await res.json();
             setUser(data);
         } catch (err) {
@@ -35,7 +36,7 @@ export default function ProfilePage() {
 
     const upgradeVerification = async (level: string) => {
         try {
-            const res = await fetch(`http://localhost:8000/api/users/${userId}/verify`, {
+            const res = await fetch(getApiUrl(`/api/users/${userId}/verify`), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
